@@ -23,7 +23,8 @@ self.addEventListener("activate", async () => {
     )
     const options = { applicationServerKey, userVisibleOnly: true }
     const subscription = await self.registration.pushManager.subscribe(options)
-    console.log(JSON.stringify(subscription))
+    const response = await saveSubscription(subscription)
+    console.log(response)
   } catch (err) {
     console.log('Error', err)
   }
@@ -36,6 +37,18 @@ self.addEventListener('push', function (event) {
     console.log('Push event but no data')
   }
 })
+
+const saveSubscription = async subscription => {
+  const SERVER_URL = 'http://localhost:4000/save-subscription'
+  const response = await fetch(SERVER_URL, {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(subscription),
+  })
+  return response.json()
+}
 
 // The first time the user starts up the PWA, 'install' is triggered.
 self.addEventListener('install', function (event) {
