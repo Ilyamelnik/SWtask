@@ -2,22 +2,6 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-// if ('serviceWorker' in navigator) {
-//   window.addEventListener('load', function () {
-//     navigator.serviceWorker.register('sw.js', { scope: '/' }).then(function (registration) {
-//       // Registration was successful
-//       console.log('ServiceWorker registration successful with scope: ', registration.scope);
-//     }, function (err) {
-//       // registration failed :(
-//       console.log('ServiceWorker registration failed: ', err);
-//     }).catch(function (err) {
-//       console.log(err)
-//     });
-//   });
-// } else {
-//   console.log('service worker is not supported');
-// }
-
 const check = () => {
   if (!('serviceWorker' in navigator)) {
     throw new Error('No Service Worker support!')
@@ -31,19 +15,12 @@ const main = async () => {
   const swRegistration = await registerServiceWorker();
   const permission = await requestNotificationPermission();
   console.log('swRegistration', swRegistration);
-  showLocalNotification('This is title', 'this is the message', swRegistration);
+  // showLocalNotification('This is title', 'this is the message', swRegistration);
 }
 
 const registerServiceWorker = async () => {
   const swRegistration = await navigator.serviceWorker.register('sw.js', { scope: '/' })
   return swRegistration;
-}
-
-const showLocalNotification = (title, body, swRegistration) => {
-  const options = {
-    body,
-  };
-  swRegistration.showNotification(title, options);
 }
 
 const requestNotificationPermission = async () => {
@@ -55,13 +32,24 @@ const requestNotificationPermission = async () => {
 }
 
 
+main();
 
+const boom = async () => {
+  const SERVER_URL = 'http://localhost:4000/send-notification'
+  const response = await fetch(SERVER_URL, {
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  return response.json();
+}
 
 function App() {
   return (
     <div className="App">
       <h1>Hello World</h1>
-      <button id="permission-btn" onClick={main}>Ask Permission</button>
+      <button id="permission-btn" onClick={boom}>Ask Permission</button>
     </div>
   );
 }

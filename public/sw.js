@@ -19,7 +19,7 @@ const urlB64ToUint8Array = base64String => {
 self.addEventListener("activate", async () => {
   try {
     const applicationServerKey = urlB64ToUint8Array(
-      'BGHCz1aNWBgPq8P7hIPSCL2aGHilZcsbdr14Z5FGm9tcmsfIFYirmmnq-JBr53bI7M0nrdpndlI_Qe0ShHlYiwY'
+      'BHP3NTadvyjrf-v8KSTsoZDNpPA1nELgrqyBYQKciRfn1Mu9PZ3nstPDACLu2eHfJDueWtbAvMMvJSZ7oNkoUrE'
     )
     const options = { applicationServerKey, userVisibleOnly: true }
     const subscription = await self.registration.pushManager.subscribe(options)
@@ -30,9 +30,17 @@ self.addEventListener("activate", async () => {
   }
 });
 
+const showLocalNotification = (title, body, swRegistration) => {
+  const options = {
+    body,
+  };
+  swRegistration.showNotification(title, options);
+}
+
 self.addEventListener('push', function (event) {
   if (event.data) {
-    console.log('Push event!! ', event.data.text())
+    console.log('Push event!! ', event.data.text());
+    showLocalNotification('Yolo', event.data.text(), self.registration)
   } else {
     console.log('Push event but no data')
   }

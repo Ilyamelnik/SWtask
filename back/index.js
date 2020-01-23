@@ -23,8 +23,8 @@ app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
 const vapidKeys = {
   publicKey:
-    'BNn5vy7iCW5rTOFsQdSTbwKGCMCSS5h6LhC7n3Wu0-NO2ZtdKnNYsaEv6fCvYeE3FMM1Vbu3TvQQ-1iHVTNcE8E',
-  privateKey: 'qj4vhpHznRwdqEVbG011MbRc-iKbtQZriRQFPthZyuo',
+    'BHP3NTadvyjrf-v8KSTsoZDNpPA1nELgrqyBYQKciRfn1Mu9PZ3nstPDACLu2eHfJDueWtbAvMMvJSZ7oNkoUrE',
+  privateKey: '26c2yMmylOsJqJEFZ2mX84Fhcf3qxp5Mqsqagjubx3w',
 }
 //setting our previously generated VAPID keys
 webpush.setVapidDetails(
