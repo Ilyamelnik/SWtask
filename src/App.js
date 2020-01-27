@@ -2,7 +2,15 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+const isLocalhost =
+  window.location.hostname === 'localhost' ||
+  window.location.hostname === '[::1]' ||
+  window.location.hostname.match(
+    /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
+  );
+
 const check = () => {
+  console.log("navigator", navigator)
   if (!('serviceWorker' in navigator)) {
     throw new Error('No Service Worker support!')
   }
@@ -10,6 +18,7 @@ const check = () => {
     throw new Error('No Push API Support!')
   }
 }
+
 const main = async () => {
   check();
   const swRegistration = await registerServiceWorker();
@@ -31,11 +40,11 @@ const requestNotificationPermission = async () => {
   }
 }
 
-
 main();
 
+
 const boom = async () => {
-  const SERVER_URL = 'http://localhost:4000/send-notification'
+  const SERVER_URL = 'http://192.168.1.201:4000/send-notification'
   const response = await fetch(SERVER_URL, {
     method: 'get',
     headers: {

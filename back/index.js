@@ -18,6 +18,7 @@ app.post('/save-subscription', async (req, res) => {
   await saveToDatabase(subscription)
   res.json({ message: 'success' })
 })
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
 

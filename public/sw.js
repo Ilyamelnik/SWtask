@@ -23,6 +23,7 @@ self.addEventListener("activate", async () => {
     )
     const options = { applicationServerKey, userVisibleOnly: true }
     const subscription = await self.registration.pushManager.subscribe(options)
+    console.log('subscription', subscription);
     const response = await saveSubscription(subscription)
     console.log(response)
   } catch (err) {
@@ -46,8 +47,34 @@ self.addEventListener('push', function (event) {
   }
 })
 
+self.onnotificationclick = function (event) {
+  console.log('EVENT', event.notification);
+  console.log('Пользователь кликнул по уведомлению: ', event.notification.tag);
+  // Закрываем уведомление
+  event.notification.close();
+
+  // Смотрим, открыта ли вкладка с данной ссылкой
+  // и фокусируемся или открываем ссылку в новой вкладке
+  event.waitUntil(
+    clients.matchAll({
+      type: 'window'
+    })
+      .then(function (clientList) {
+        var url = event.notification.data;
+        for (var i = 0; i < clientList.length; i++) {
+          var client = clientList[i];
+          if (client.url == url && 'focus' in client)
+            return client.focus();
+        }
+        if (clients.openWindow) {
+          return clients.openWindow(url);
+        }
+      })
+  );
+};
+
 const saveSubscription = async subscription => {
-  const SERVER_URL = 'http://localhost:4000/save-subscription'
+  const SERVER_URL = 'http://192.168.1.201:4000/save-subscription'
   const response = await fetch(SERVER_URL, {
     method: 'post',
     headers: {
